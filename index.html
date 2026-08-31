@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#09090c">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" href="./icon.svg">
-<link rel="apple-touch-icon" href="./icon.svg">
+<link rel="apple-touch-icon" href="./icon-180.png">
 <title>Wolt Shift Efficiency</title>
 <style>
 :root{--bg:#09090c;--card:#121218;--text:#f7f7fb;--muted:#9b9bab;--pink:#ff3ea5;--good:#36d67e;--warn:#ffbd2e;--bad:#ff5468;--line:#282834}
@@ -16,7 +16,7 @@
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px}.metric{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:14px}.metric span{display:block;color:var(--muted);font-size:11px;margin-bottom:5px}.metric b{font-size:22px}.metric small{color:var(--muted);font-size:10px}
 .panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:15px;margin-bottom:12px}.panel h2{font-size:14px;margin:0 0 12px}.row{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
 input{min-width:0;flex:1;background:#0d0d12;color:white;border:1px solid #30303b;border-radius:12px;font-size:16px;padding:13px 12px;outline:none}
-button{border:0;border-radius:12px;padding:13px 14px;font-weight:800;font-size:13px;cursor:pointer;background:#272731;color:white}.primary{background:linear-gradient(135deg,var(--pink),#d72386)}.good{background:#153d29;color:#67e9a0}.warn{background:#493a17;color:#ffd66c}.danger{background:#451b24;color:#ff8795}.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:9px}.quick button{padding:10px 5px}
+button{border:0;border-radius:12px;padding:13px 14px;font-weight:800;font-size:13px;cursor:pointer;background:#272731;color:white}.primary{background:linear-gradient(135deg,var(--pink),#d72386)}.good{background:#153d29;color:#67e9a0}.warn{background:#493a17;color:#ffd66c}.danger{background:#451b24;color:#ff8795}.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:9px}.quick button{padding:10px 5px}.deliveryBtn{width:100%;font-size:16px;padding:15px;margin-bottom:10px}.deliveryBtn.active{background:#493a17;color:#ffd66c}.deliveryHint{text-align:center;margin:0 0 11px}
 .settings{display:grid;grid-template-columns:1fr 1fr;gap:9px}.field label{display:block;font-size:10px;color:var(--muted);margin:0 0 5px 3px}.field input{width:100%;padding:11px;font-size:14px}.help{font-size:11px;color:var(--muted);line-height:1.55}.footer{text-align:center;color:#666677;font-size:10px;margin-top:16px}.connection{padding:10px 12px;border:1px solid var(--line);border-radius:12px;font-size:11px;color:var(--muted);margin-bottom:10px}.connection.ok{color:#76e6a5;border-color:#245d3d}.connection.bad{color:#ff8795;border-color:#612731}.next{margin-top:9px;font-size:11px;color:#aaaabc}
 @media(min-width:600px){.grid{grid-template-columns:repeat(4,1fr)}}
 </style>
@@ -34,9 +34,12 @@ button{border:0;border-radius:12px;padding:13px 14px;font-weight:800;font-size:1
 </div>
 
 <section class="panel">
-<h2>Add completed order</h2>
-<div class="row"><input id="amount" type="number" inputmode="decimal" placeholder="Order pay, e.g. 145"><button class="primary" onclick="addOrder()">+ Add order</button></div>
+<h2>Orders</h2>
+<button id="deliveryBtn" class="primary deliveryBtn" onclick="toggleDelivery()">🚲 Got order</button>
+<p class="help deliveryHint" id="deliveryHint">Tap once when Wolt gives you an order. Idle alerts pause until you complete it.</p>
+<div class="row"><input id="amount" type="number" inputmode="decimal" placeholder="Completed order pay, e.g. 145"><button class="primary" onclick="addOrder()">+ Complete</button></div>
 <div class="quick"><button onclick="quick(100)">+100</button><button onclick="quick(120)">+120</button><button onclick="quick(150)">+150</button><button onclick="quick(200)">+200</button></div>
+<div class="row" style="margin-top:9px"><button id="undoBtn" onclick="undoLastOrder()">↶ Undo last order</button></div>
 </section>
 
 <section class="panel">
@@ -46,98 +49,144 @@ button{border:0;border-radius:12px;padding:13px 14px;font-weight:800;font-size:1
 
 <section class="panel">
 <h2>Background alerts</h2>
-<div id="conn" class="connection bad">Backend not configured.</div>
+<div id="conn" class="connection bad">Checking backend…</div>
 <div class="row"><button class="primary" onclick="enablePush()">Enable iPhone alerts</button><button onclick="testPush()">Test alert</button></div>
 <div class="next" id="nextAlert">Next server check: —</div>
-<p class="help">Install this site to your iPhone Home Screen first, then open the installed app and enable alerts. The backend schedules the next threshold directly — no 5-minute polling.</p>
+<p class="help">When you are on a delivery, idle alerts are suspended. Completing the order automatically restarts the idle timer. Going offline also cancels alerts.</p>
 </section>
 
 <section class="panel">
 <h2>Efficiency rules</h2>
 <div class="settings">
-<div class="field"><label>GOOD RATE ≥ MKD/hr</label><input id="goodRate" type="number" value="300"></div>
-<div class="field"><label>LEAVE RATE &lt; MKD/hr</label><input id="badRate" type="number" value="220"></div>
-<div class="field"><label>REPOSITION AFTER IDLE (min)</label><input id="moveIdle" type="number" value="20"></div>
-<div class="field"><label>GO HOME AFTER IDLE (min)</label><input id="leaveIdle" type="number" value="35"></div>
+<div class="field"><label>GOOD RATE ≥ MKD/hr</label><input id="goodRate" type="number" min="1" value="300"></div>
+<div class="field"><label>LEAVE RATE &lt; MKD/hr</label><input id="badRate" type="number" min="1" value="220"></div>
+<div class="field"><label>REPOSITION AFTER IDLE (min)</label><input id="moveIdle" type="number" min="1" value="20"></div>
+<div class="field"><label>GO HOME AFTER IDLE (min)</label><input id="leaveIdle" type="number" min="2" value="35"></div>
 </div>
-<p class="help">When you add an order, the previous background timer is replaced by a new exact one. If the first check says REPOSITION, the backend automatically schedules the next relevant GO HOME check. Going offline cancels the timer.</p>
+<p class="help">Your settings are saved on this device. Go-home idle must be later than reposition idle.</p>
 </section>
 <div class="footer">Saved locally • background state synced when connected</div>
 </div>
 
 <script src="./config.js"></script>
 <script>
-const KEY='woltShiftFinalV1';
+const KEY='woltShiftFinalV2', OLD_KEY='woltShiftFinalV1', RULES_KEY='woltShiftRulesV2';
 const $=id=>document.getElementById(id),now=()=>Date.now();
-let s=JSON.parse(localStorage.getItem(KEY)||'null')||{startedAt:null,activeSince:null,activeMs:0,paused:true,ended:false,earnings:0,lastOrderAt:null,orders:[]};
+const blankState=()=>({startedAt:null,activeSince:null,activeMs:0,paused:true,ended:false,earnings:0,lastOrderAt:null,orders:[],onDelivery:false,deliveryStartedAt:null});
+let s=JSON.parse(localStorage.getItem(KEY)||localStorage.getItem(OLD_KEY)||'null')||blankState();
+s={...blankState(),...s,onDelivery:!!s.onDelivery,deliveryStartedAt:s.deliveryStartedAt||null};
+const savedRules=JSON.parse(localStorage.getItem(RULES_KEY)||'null')||{good:300,bad:220,move:20,leave:35};
 
-function rules(){return{good:+$('goodRate').value||300,bad:+$('badRate').value||220,move:+$('moveIdle').value||20,leave:+$('leaveIdle').value||35}}
+function rules(){
+ let r={good:Math.max(1,+$('goodRate').value||300),bad:Math.max(1,+$('badRate').value||220),move:Math.max(1,+$('moveIdle').value||20),leave:Math.max(2,+$('leaveIdle').value||35)};
+ if(r.leave<=r.move){r.leave=r.move+1;$('leaveIdle').value=r.leave}
+ return r;
+}
+function loadRules(){ $('goodRate').value=savedRules.good;$('badRate').value=savedRules.bad;$('moveIdle').value=savedRules.move;$('leaveIdle').value=savedRules.leave }
+function saveRules(){const r=rules();localStorage.setItem(RULES_KEY,JSON.stringify(r));return r}
 function deviceId(){let id=localStorage.getItem('woltDeviceId');if(!id){id=crypto.randomUUID();localStorage.setItem('woltDeviceId',id)}return id}
-function activeMs(){return s.activeMs+(!s.paused&&s.activeSince?now()-s.activeSince:0)}
-function rate(){let h=activeMs()/3600000;return h>0?s.earnings/h:0}
-function fmt(ms){let m=Math.floor(ms/60000),h=Math.floor(m/60);return String(h).padStart(2,'0')+':'+String(m%60).padStart(2,'0')}
+function deviceSecret(){let x=localStorage.getItem('woltDeviceSecret');if(!x){const b=new Uint8Array(24);crypto.getRandomValues(b);x=Array.from(b,v=>v.toString(16).padStart(2,'0')).join('');localStorage.setItem('woltDeviceSecret',x)}return x}
+function activeMs(){return (s.activeMs||0)+(!s.paused&&s.activeSince?Math.max(0,now()-s.activeSince):0)}
+function rate(){let h=activeMs()/3600000;return h>0?(s.earnings||0)/h:0}
+function fmt(ms){let m=Math.max(0,Math.floor(ms/60000)),h=Math.floor(m/60);return String(h).padStart(2,'0')+':'+String(m%60).padStart(2,'0')}
 function save(){localStorage.setItem(KEY,JSON.stringify(s))}
-function headers(){return {'content-type':'application/json','x-device-id':deviceId()}}
+function headers(){return {'content-type':'application/json','x-device-id':deviceId(),'x-device-secret':deviceSecret()}}
 function backend(){return (window.APP_CONFIG?.WORKER_URL||'').replace(/\/$/,'')}
 
 async function sync(){
- save();
+ save();const rls=saveRules();
  if(!backend()){updateConn(false,'Backend not configured.');return}
  try{
-   let r=await fetch(backend()+'/state',{method:'POST',headers:headers(),body:JSON.stringify({state:s,rules:rules()})});
-   let j=await r.json();
-   if(!r.ok)throw new Error(j.error||'sync failed');
-   updateConn(true,'Background backend connected.');
+   let r=await fetch(backend()+'/state',{method:'POST',headers:headers(),body:JSON.stringify({state:s,rules:rls})});
+   let j=await r.json(); if(!r.ok)throw new Error(j.error||'sync failed');
+   updateConn(true,j.pushEnabled?'Background connected • iPhone alerts enabled.':'Background connected • alerts need enabling.');
    $('nextAlert').textContent='Next server check: '+(j.nextAlarmAt?new Date(j.nextAlarmAt).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}):'—');
- }catch(e){updateConn(false,'Could not reach background backend.')}
+ }catch(e){updateConn(false,'Could not reach background backend. '+(e?.message||''))}
 }
 function updateConn(ok,text){$('conn').className='connection '+(ok?'ok':'bad');$('conn').textContent=text}
 
-function startShift(){s={startedAt:now(),activeSince:now(),activeMs:0,paused:false,ended:false,earnings:0,lastOrderAt:now(),orders:[]};sync();render()}
-function pauseShift(){if(s.paused||s.ended)return;s.activeMs+=now()-s.activeSince;s.activeSince=null;s.paused=true;sync();render()}
-function resumeShift(){if(!s.startedAt||s.ended)return startShift();if(!s.paused)return;s.activeSince=now();s.paused=false;if(!s.lastOrderAt)s.lastOrderAt=now();sync();render()}
-function endShift(){if(!s.startedAt)return;if(!s.paused){s.activeMs+=now()-s.activeSince;s.activeSince=null}s.paused=true;s.ended=true;sync();render()}
-function addOrder(){let v=+$('amount').value;if(!v||v<=0)return;if(!s.startedAt||s.ended)startShift();if(s.paused)resumeShift();s.earnings+=v;s.lastOrderAt=now();s.orders.unshift({amount:v,time:now()});$('amount').value='';sync();render()}
+function startShift(){
+ if(s.startedAt&&!s.ended&&!confirm('A shift is already active. Start a new shift and reset this one?'))return;
+ s={...blankState(),startedAt:now(),activeSince:now(),paused:false,lastOrderAt:now()};sync();render();
+}
+function pauseShift(){
+ if(!s.startedAt||s.paused||s.ended)return;
+ s.activeMs=activeMs();s.activeSince=null;s.paused=true;s.onDelivery=false;s.deliveryStartedAt=null;sync();render();
+}
+function resumeShift(){
+ if(!s.startedAt||s.ended)return startShift();if(!s.paused)return;
+ s.activeSince=now();s.paused=false;s.lastOrderAt=now();s.onDelivery=false;s.deliveryStartedAt=null;sync();render();
+}
+function endShift(){
+ if(!s.startedAt||s.ended)return;if(!confirm('End this shift?'))return;
+ if(!s.paused){s.activeMs=activeMs();s.activeSince=null}s.paused=true;s.ended=true;s.onDelivery=false;s.deliveryStartedAt=null;sync();render();
+}
+function toggleDelivery(){
+ if(!s.startedAt||s.ended)return alert('Start your shift first.');
+ if(s.paused)return alert('Tap Back online first.');
+ if(!s.onDelivery){s.onDelivery=true;s.deliveryStartedAt=now();}
+ else {s.onDelivery=false;s.deliveryStartedAt=null;s.lastOrderAt=now();}
+ sync();render();
+}
+function addOrder(){
+ let v=+$('amount').value;if(!Number.isFinite(v)||v<=0)return alert('Enter a valid order payout.');
+ if(!s.startedAt||s.ended)return alert('Start your shift first.');
+ if(s.paused)return alert('You are offline. Tap Back online first.');
+ const t=now();s.earnings=(s.earnings||0)+v;s.lastOrderAt=t;s.onDelivery=false;s.deliveryStartedAt=null;s.orders=Array.isArray(s.orders)?s.orders:[];s.orders.unshift({amount:v,time:t});$('amount').value='';sync();render();
+}
 function quick(v){$('amount').value=v;addOrder()}
+function undoLastOrder(){
+ if(!Array.isArray(s.orders)||!s.orders.length)return alert('There is no order to undo.');
+ const o=s.orders.shift();s.earnings=Math.max(0,(s.earnings||0)-(+o.amount||0));s.lastOrderAt=s.orders[0]?.time||s.startedAt||now();s.onDelivery=false;s.deliveryStartedAt=null;sync();render();
+}
 
 function decision(){
- if(!s.startedAt)return['READY','Start your shift, then add each completed order.','stay'];
- if(s.ended)return['SHIFT DONE',`${Math.round(rate())} MKD/hr • ${Math.round(s.earnings)} MKD total`,'stay'];
- if(s.paused)return['OFFLINE','Paused time is excluded from your MKD/hr.','move'];
+ if(!s.startedAt)return['READY','Start your shift, then tap Got order when Wolt gives you one.','stay'];
+ if(s.ended)return['SHIFT DONE',`${Math.round(rate())} MKD/hr • ${Math.round(s.earnings||0)} MKD total`,'stay'];
+ if(s.paused)return['OFFLINE','Paused time is excluded from your MKD/hr and idle timer.','move'];
+ if(s.onDelivery)return['ON DELIVERY','Idle alerts are paused while you complete this order.','stay'];
  const c=rules(),mins=activeMs()/60000,r=rate(),idle=(now()-(s.lastOrderAt||s.startedAt))/60000;
  if(mins<30){
-   if(idle>=c.leave)return['GO HOME',`No completed order for ${Math.floor(idle)} min. Demand looks dead.`,'leave'];
+   if(idle>=c.leave)return['GO HOME',`No order activity for ${Math.floor(idle)} min. Demand looks dead.`,'leave'];
    if(idle>=c.move)return['REPOSITION',`${Math.floor(idle)} min idle. Move once to a stronger hotspot.`,'move'];
    return['STAY',`Only ${Math.floor(mins)} min into the shift — collect more data first.`,'stay'];
  }
  if(idle>=c.leave&&r<c.good)return['GO HOME',`${Math.floor(idle)} min idle and ${Math.round(r)} MKD/hr.`,'leave'];
- if(r<c.bad&&idle>=c.move)return['GO HOME',`${Math.round(r)} MKD/hr with ${Math.floor(idle)} min since the last order.`,'leave'];
+ if(r<c.bad&&idle>=c.move)return['GO HOME',`${Math.round(r)} MKD/hr with ${Math.floor(idle)} min idle.`,'leave'];
  if(idle>=c.move)return['REPOSITION',`${Math.floor(idle)} min without an order. Try one stronger hotspot.`,'move'];
  if(r>=c.good)return['STAY',`${Math.round(r)} MKD/hr is above your target.`,'stay'];
  if(r<c.bad)return['WATCH',`${Math.round(r)} MKD/hr is weak, but an order arrived recently.`,'move'];
  return['STAY',`${Math.round(r)} MKD/hr is acceptable and orders are moving.`,'stay'];
 }
-function render(){let d=decision();$('call').textContent=d[0];$('why').textContent=d[1];$('status').className='status '+d[2];$('rate').textContent=Math.round(rate());$('earnings').textContent=Math.round(s.earnings);$('online').textContent=fmt(activeMs());let idle=(!s.startedAt||s.paused||s.ended)?0:now()-(s.lastOrderAt||s.startedAt);$('idle').textContent=fmt(idle)}
+function render(){
+ let d=decision();$('call').textContent=d[0];$('why').textContent=d[1];$('status').className='status '+d[2];$('rate').textContent=Math.round(rate());$('earnings').textContent=Math.round(s.earnings||0);$('online').textContent=fmt(activeMs());
+ let idle=(!s.startedAt||s.paused||s.ended||s.onDelivery)?0:now()-(s.lastOrderAt||s.startedAt);$('idle').textContent=s.onDelivery?'—':fmt(idle);
+ $('deliveryBtn').textContent=s.onDelivery?'✓ On delivery — tap if cancelled':'🚲 Got order';$('deliveryBtn').className='deliveryBtn '+(s.onDelivery?'active':'primary');$('deliveryHint').textContent=s.onDelivery?'No reposition/go-home alert will fire until you complete or cancel this order.':'Tap once when Wolt gives you an order. Idle alerts pause until you complete it.';
+ $('undoBtn').disabled=!s.orders?.length;
+}
 function b64ToBytes(v){const p=v+'='.repeat((4-v.length%4)%4),raw=atob(p.replace(/-/g,'+').replace(/_/g,'/'));return Uint8Array.from(raw,c=>c.charCodeAt(0))}
 async function enablePush(){
  if(!backend())return alert('Configure the backend URL first.');
  if(!('serviceWorker'in navigator)||!('PushManager'in window))return alert('Open the installed Home Screen app. Push is unavailable in this browser view.');
- const permission=await Notification.requestPermission();if(permission!=='granted')return;
- const reg=await navigator.serviceWorker.ready;
- const k=await (await fetch(backend()+'/vapid-public-key',{headers:{'x-device-id':deviceId()}})).json();
- let sub=await reg.pushManager.getSubscription();
- if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64ToBytes(k.publicKey).buffer});
- const r=await fetch(backend()+'/subscribe',{method:'POST',headers:headers(),body:JSON.stringify(sub.toJSON())});
- if(!r.ok)return alert('Could not save push subscription.');
- await sync();alert('Background alerts enabled.');
+ try{
+   const permission=await Notification.requestPermission();if(permission!=='granted')return alert('Notifications were not allowed.');
+   const reg=await navigator.serviceWorker.ready;
+   const k=await (await fetch(backend()+'/vapid-public-key',{headers:headers()})).json();
+   let sub=await reg.pushManager.getSubscription();
+   if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64ToBytes(k.publicKey).buffer});
+   const r=await fetch(backend()+'/subscribe',{method:'POST',headers:headers(),body:JSON.stringify(sub.toJSON())});
+   if(!r.ok)throw new Error('Could not save push subscription.');
+   await sync();alert('Background alerts enabled.');
+ }catch(e){alert(e?.message||'Could not enable alerts.')}
 }
 async function testPush(){
  if(!backend())return alert('Configure the backend first.');
- let r=await fetch(backend()+'/test',{method:'POST',headers:{'x-device-id':deviceId()}});
- if(!r.ok)alert('Enable iPhone alerts first.');
+ try{let r=await fetch(backend()+'/test',{method:'POST',headers:headers()});let j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||'Enable iPhone alerts again.');}
+ catch(e){alert(e?.message||'Test alert failed. Try enabling iPhone alerts again.');await sync()}
 }
+loadRules();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js');
-['goodRate','badRate','moveIdle','leaveIdle'].forEach(id=>$(id).addEventListener('change',sync));
+['goodRate','badRate','moveIdle','leaveIdle'].forEach(id=>$(id).addEventListener('change',()=>{saveRules();sync();render()}));
 if(backend())sync();else updateConn(false,'Backend not configured.');
 render();setInterval(render,1000);
 </script></body></html>
