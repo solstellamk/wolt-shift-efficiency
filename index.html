@@ -5,188 +5,173 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#09090c">
 <link rel="manifest" href="./manifest.webmanifest">
-<link rel="icon" href="./icon.svg">
 <link rel="apple-touch-icon" href="./icon-180.png">
+<link rel="icon" type="image/png" href="./icon-192.png">
 <title>Wolt Shift Efficiency</title>
 <style>
-:root{--bg:#09090c;--card:#121218;--text:#f7f7fb;--muted:#9b9bab;--pink:#ff3ea5;--good:#36d67e;--warn:#ffbd2e;--bad:#ff5468;--line:#282834}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#21101c 0,#0b0b10 27%,#09090c 62%);color:var(--text);font-family:Inter,system-ui,-apple-system,sans-serif;min-height:100vh;padding:18px 14px 42px}.wrap{max-width:720px;margin:auto}
-.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}.top h1{font-size:22px;margin:0}.top p{font-size:12px;color:var(--muted);margin:3px 0 0}.badge{font-size:11px;background:#291323;color:#ff8ac8;border:1px solid #55213f;padding:7px 10px;border-radius:999px}
+:root{--bg:#09090c;--card:#121218;--text:#f7f7fb;--muted:#9b9bab;--pink:#ff3ea5;--good:#36d67e;--warn:#ffbd2e;--bad:#ff5468;--line:#282834;--blue:#55a7ff}
+*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;background:radial-gradient(circle at top,#21101c 0,#0b0b10 27%,#09090c 62%);color:var(--text);font-family:Inter,system-ui,-apple-system,sans-serif;min-height:100vh;padding:18px 14px 46px}.wrap{max-width:760px;margin:auto}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}.top h1{font-size:22px;margin:0}.top p{font-size:12px;color:var(--muted);margin:3px 0 0}.badge{font-size:11px;background:#291323;color:#ff8ac8;border:1px solid #55213f;padding:7px 10px;border-radius:999px;white-space:nowrap}
 .status{border-radius:22px;padding:20px;border:1px solid var(--line);background:linear-gradient(145deg,#15151c,#101016);box-shadow:0 15px 45px #0008;margin-bottom:12px;text-align:center}.status .label{font-size:11px;letter-spacing:.16em;color:var(--muted);font-weight:800}.status .call{font-size:36px;font-weight:950;margin:5px 0 3px}.status .why{font-size:13px;color:#c6c6d0;line-height:1.45}.stay .call{color:var(--good)}.move .call{color:var(--warn)}.leave .call{color:var(--bad)}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px}.metric{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:14px}.metric span{display:block;color:var(--muted);font-size:11px;margin-bottom:5px}.metric b{font-size:22px}.metric small{color:var(--muted);font-size:10px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px}.metric{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:14px}.metric span{display:block;color:var(--muted);font-size:11px;margin-bottom:5px}.metric b{font-size:22px}.metric small{color:var(--muted);font-size:10px}.metric.wide{grid-column:span 2}
 .panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:15px;margin-bottom:12px}.panel h2{font-size:14px;margin:0 0 12px}.row{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
-input{min-width:0;flex:1;background:#0d0d12;color:white;border:1px solid #30303b;border-radius:12px;font-size:16px;padding:13px 12px;outline:none}
-button{border:0;border-radius:12px;padding:13px 14px;font-weight:800;font-size:13px;cursor:pointer;background:#272731;color:white}.primary{background:linear-gradient(135deg,var(--pink),#d72386)}.good{background:#153d29;color:#67e9a0}.warn{background:#493a17;color:#ffd66c}.danger{background:#451b24;color:#ff8795}.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:9px}.quick button{padding:10px 5px}.deliveryBtn{width:100%;font-size:16px;padding:15px;margin-bottom:10px}.deliveryBtn.active{background:#493a17;color:#ffd66c}.deliveryHint{text-align:center;margin:0 0 11px}
+input{min-width:0;flex:1;background:#0d0d12;color:white;border:1px solid #30303b;border-radius:12px;font-size:16px;padding:13px 12px;outline:none}button{border:0;border-radius:12px;padding:13px 14px;font-weight:800;font-size:13px;cursor:pointer;background:#272731;color:white}button:disabled{opacity:.45;cursor:not-allowed}.primary{background:linear-gradient(135deg,var(--pink),#d72386)}.good{background:#153d29;color:#67e9a0}.warn{background:#493a17;color:#ffd66c}.danger{background:#451b24;color:#ff8795}.blue{background:#17324d;color:#8fc8ff}.ghost{background:#1b1b23;color:#c9c9d4}.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:9px}.quick button{padding:10px 5px}.deliveryBtn{width:100%;font-size:16px;padding:15px;margin-bottom:10px}.deliveryBtn.active{background:#493a17;color:#ffd66c}.deliveryHint{text-align:center;margin:0 0 11px}.deliveryActions{display:none;gap:8px;margin-top:9px}.deliveryActions.show{display:flex}.deliveryActions button{flex:1}
 .settings{display:grid;grid-template-columns:1fr 1fr;gap:9px}.field label{display:block;font-size:10px;color:var(--muted);margin:0 0 5px 3px}.field input{width:100%;padding:11px;font-size:14px}.help{font-size:11px;color:var(--muted);line-height:1.55}.footer{text-align:center;color:#666677;font-size:10px;margin-top:16px}.connection{padding:10px 12px;border:1px solid var(--line);border-radius:12px;font-size:11px;color:var(--muted);margin-bottom:10px}.connection.ok{color:#76e6a5;border-color:#245d3d}.connection.bad{color:#ff8795;border-color:#612731}.next{margin-top:9px;font-size:11px;color:#aaaabc}
-@media(min-width:600px){.grid{grid-template-columns:repeat(4,1fr)}}
+.pending{margin-top:12px;border-top:1px solid var(--line);padding-top:10px}.pendingTitle{font-size:11px;color:#ffd66c;font-weight:800;margin-bottom:7px}.pendingItem{display:flex;gap:8px;align-items:center;justify-content:space-between;background:#0f0f15;border:1px solid #292934;padding:9px 10px;border-radius:11px;margin-top:7px}.pendingItem span{font-size:11px;color:#c8c8d0}.pendingItem button{padding:8px 10px;font-size:11px}
+details{background:var(--card);border:1px solid var(--line);border-radius:18px;margin-bottom:12px;overflow:hidden}summary{padding:15px;font-size:14px;font-weight:800;cursor:pointer;list-style:none}summary::-webkit-details-marker{display:none}summary:after{content:'＋';float:right;color:var(--muted)}details[open] summary:after{content:'−'}details .inside{border-top:1px solid var(--line);padding:14px}.insightGrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.insight{background:#0f0f15;border:1px solid #282833;border-radius:13px;padding:11px}.insight span{display:block;font-size:10px;color:var(--muted);margin-bottom:4px}.insight b{font-size:15px}.insight p{font-size:10px;color:var(--muted);margin:4px 0 0;line-height:1.35}.historyItem{border:1px solid #282833;background:#0f0f15;border-radius:13px;padding:11px;margin-top:8px}.historyTop{display:flex;justify-content:space-between;gap:8px}.historyTop b{font-size:13px}.historyTop span{font-size:11px;color:var(--muted)}.historyLine{font-size:11px;color:#c8c8d0;margin-top:5px}.rating{font-size:10px;font-weight:900;padding:4px 7px;border-radius:999px}.rating.excellent,.rating.good{background:#153d29;color:#67e9a0}.rating.okay{background:#493a17;color:#ffd66c}.rating.weak{background:#451b24;color:#ff8795}.notice{font-size:11px;color:#c6c6d0;background:#0e0e13;border:1px solid #282833;border-radius:12px;padding:10px;margin-bottom:10px;line-height:1.45}.hidden{display:none!important}
+@media(min-width:620px){.grid{grid-template-columns:repeat(5,1fr)}.metric.wide{grid-column:auto}.insightGrid{grid-template-columns:repeat(3,1fr)}}
 </style>
 </head>
 <body><div class="wrap">
-<div class="top"><div><h1>Shift Efficiency</h1><p>Wolt live decision helper</p></div><div class="badge">EXACT ALERTS</div></div>
-
-<section class="status stay" id="status"><div class="label">CURRENT CALL</div><div class="call" id="call">READY</div><div class="why" id="why">Start your shift, then add each completed order.</div></section>
-
+<div class="top"><div><h1>Shift Efficiency</h1><p>Wolt live decision helper</p></div><div class="badge">SMART v3</div></div>
+<section class="status stay" id="status"><div class="label">CURRENT CALL</div><div class="call" id="call">READY</div><div class="why" id="why">Start your shift, then tap Got order when Wolt gives you one.</div></section>
 <div class="grid">
 <div class="metric"><span>LIVE RATE</span><b id="rate">0</b> <small>MKD/hr</small></div>
+<div class="metric"><span>LAST 60</span><b id="rate60">—</b> <small>MKD/hr</small></div>
 <div class="metric"><span>EARNINGS</span><b id="earnings">0</b> <small>MKD</small></div>
 <div class="metric"><span>ONLINE</span><b id="online">00:00</b></div>
-<div class="metric"><span>IDLE</span><b id="idle">00:00</b></div>
+<div class="metric wide"><span>IDLE</span><b id="idle">00:00</b></div>
 </div>
-
 <section class="panel">
 <h2>Orders</h2>
-<button id="deliveryBtn" class="primary deliveryBtn" onclick="toggleDelivery()">🚲 Got order</button>
-<p class="help deliveryHint" id="deliveryHint">Tap once when Wolt gives you an order. Idle alerts pause until you complete it.</p>
-<div class="row"><input id="amount" type="number" inputmode="decimal" placeholder="Completed order pay, e.g. 145"><button class="primary" onclick="addOrder()">+ Complete</button></div>
+<button id="deliveryBtn" class="primary deliveryBtn" onclick="gotOrder()">🚲 Got order / batch</button>
+<p class="help deliveryHint" id="deliveryHint">One tap when Wolt gives you an order. For doubles, keep it active until the final drop.</p>
+<div class="row"><input id="amount" type="number" inputmode="decimal" placeholder="Payout, e.g. 145"><button class="primary" id="payBtn" onclick="addPayout()">+ Complete</button></div>
 <div class="quick"><button onclick="quick(100)">+100</button><button onclick="quick(120)">+120</button><button onclick="quick(150)">+150</button><button onclick="quick(200)">+200</button></div>
-<div class="row" style="margin-top:9px"><button id="undoBtn" onclick="undoLastOrder()">↶ Undo last order</button></div>
+<div id="deliveryActions" class="deliveryActions"><button class="blue" onclick="deliveredPriceLater()">✓ Delivered • price later</button><button class="danger" onclick="cancelDelivery()">Cancel order</button></div>
+<div class="row" style="margin-top:9px"><button id="undoBtn" class="ghost" onclick="undoLastPayout()">↶ Undo last payout</button><button id="editBtn" class="ghost" onclick="editLastPayout()">✎ Fix last payout</button></div>
+<div id="pendingBox" class="pending hidden"><div class="pendingTitle" id="pendingTitle">Pending prices</div><div id="pendingList"></div></div>
 </section>
-
-<section class="panel">
-<h2>Shift controls</h2>
-<div class="row"><button class="good" onclick="startShift()">Start shift</button><button class="warn" onclick="pauseShift()">Go offline</button><button onclick="resumeShift()">Back online</button><button class="danger" onclick="endShift()">End shift</button></div>
-</section>
-
-<section class="panel">
-<h2>Background alerts</h2>
-<div id="conn" class="connection bad">Checking backend…</div>
-<div class="row"><button class="primary" onclick="enablePush()">Enable iPhone alerts</button><button onclick="testPush()">Test alert</button></div>
-<div class="next" id="nextAlert">Next server check: —</div>
-<p class="help">When you are on a delivery, idle alerts are suspended. Completing the order automatically restarts the idle timer. Going offline also cancels alerts.</p>
-</section>
-
-<section class="panel">
-<h2>Efficiency rules</h2>
-<div class="settings">
-<div class="field"><label>GOOD RATE ≥ MKD/hr</label><input id="goodRate" type="number" min="1" value="300"></div>
-<div class="field"><label>LEAVE RATE &lt; MKD/hr</label><input id="badRate" type="number" min="1" value="220"></div>
-<div class="field"><label>REPOSITION AFTER IDLE (min)</label><input id="moveIdle" type="number" min="1" value="20"></div>
-<div class="field"><label>GO HOME AFTER IDLE (min)</label><input id="leaveIdle" type="number" min="2" value="35"></div>
+<section class="panel"><h2>Shift controls</h2><div class="row"><button class="good" onclick="startShift()">Start shift</button><button class="warn" onclick="pauseShift()">Go offline</button><button onclick="resumeShift()">Back online</button><button class="danger" onclick="endShift()">End shift</button></div></section>
+<section class="panel"><h2>Background alerts</h2><div id="conn" class="connection bad">Checking backend…</div><div class="row"><button class="primary" onclick="enablePush()">Enable iPhone alerts</button><button onclick="testPush()">Test alert</button></div><div class="next" id="nextAlert">Next server check: —</div><p class="help">Alerts only run while you are online and waiting. Delivery, offline, cancelled-order, and completed-delivery state changes suppress stale alerts on the phone even if the server briefly missed a sync.</p></section>
+<section class="panel"><h2>Efficiency rules</h2><div class="settings"><div class="field"><label>GOOD RATE ≥ MKD/hr</label><input id="goodRate" type="number" min="1" value="300"></div><div class="field"><label>WEAK RATE &lt; MKD/hr</label><input id="badRate" type="number" min="1" value="220"></div><div class="field"><label>REPOSITION AFTER IDLE (min)</label><input id="moveIdle" type="number" min="1" value="15"></div><div class="field"><label>GO HOME AFTER IDLE (min)</label><input id="leaveIdle" type="number" min="2" value="30"></div></div><p class="help">Reposition and Go Home are now strict idle thresholds: low MKD/hr can warn you, but it will not skip straight to Go Home before the Go Home timer.</p></section>
+<details><summary>Smart insights</summary><div class="inside"><div class="insightGrid">
+<div class="insight"><span>LAST 30 / 60 / 90</span><b id="recentRates">— / — / —</b><p>Recent pace uses actual online time in each window.</p></div>
+<div class="insight"><span>MOMENTUM</span><b id="momentum">BUILDING DATA</b><p id="momentumWhy">Needs enough recent online time.</p></div>
+<div class="insight"><span>DECISION CONFIDENCE</span><b id="confidence">LOW</b><p id="confidenceWhy">Improves as your shift history grows.</p></div>
+<div class="insight"><span>PACE PROJECTION</span><b id="projection">—</b><p>Blends whole-shift and recent pace.</p></div>
+<div class="insight"><span>NEXT-HOUR TARGET</span><b id="needHour">—</b><p id="needHourWhy">What you need to stay at your Good Rate.</p></div>
+<div class="insight"><span>ORDER FLOW</span><b id="orderFlow">—</b><p id="orderFlowWhy">Completed batches and average wait.</p></div>
+<div class="insight"><span>YOUR BEST TIME</span><b id="bestHour">LEARNING</b><p id="bestHourWhy">Learns from your saved shifts automatically.</p></div>
+<div class="insight"><span>LEARNED IDLE RULES</span><b id="learnedRules">LEARNING</b><p id="learnedWhy">Uses successful wait times from your own shifts.</p><button id="applyLearned" class="ghost hidden" style="margin-top:8px;padding:8px 10px;font-size:10px" onclick="applyLearnedRules()">Use suggestion</button></div>
+<div class="insight"><span>TODAY</span><b id="todayStats">—</b><p id="todayWhy">Includes your active shift plus finished shifts today.</p></div>
+<div class="insight"><span>LAST 7 DAYS</span><b id="weekly">—</b><p id="weeklyWhy">Saved finished shifts only.</p></div>
+<div class="insight"><span>PERSONAL RECORD</span><b id="record">—</b><p id="recordWhy">Best efficient shift with at least 1 hour online.</p></div>
+</div></div></details>
+<details><summary>Shift history</summary><div class="inside"><div id="historyList" class="notice">No finished shifts saved yet.</div></div></details>
+<details><summary>Backup & recovery</summary><div class="inside"><div class="notice">Your current shift and recent history save locally and sync to your Cloudflare Worker when connected. Export a file if you want a portable backup for a different phone or a full browser-data reset. <b>Keep exported backup files private</b> because they include this device's recovery credentials.</div><div class="row"><button class="blue" onclick="exportData()">Export backup</button><button onclick="document.getElementById('importFile').click()">Import backup</button><button onclick="restoreCloud()">Restore cloud copy</button></div><input id="importFile" class="hidden" type="file" accept="application/json" onchange="importData(event)"></div></details>
+<div class="footer">Local-first • cloud recovery • background alerts • no Wolt login needed</div>
 </div>
-<p class="help">Your settings are saved on this device. Go-home idle must be later than reposition idle.</p>
-</section>
-<div class="footer">Saved locally • background state synced when connected</div>
-</div>
-
 <script src="./config.js"></script>
 <script>
-const KEY='woltShiftFinalV2', OLD_KEY='woltShiftFinalV1', RULES_KEY='woltShiftRulesV2';
-const $=id=>document.getElementById(id),now=()=>Date.now();
-const blankState=()=>({startedAt:null,activeSince:null,activeMs:0,paused:true,ended:false,earnings:0,lastOrderAt:null,orders:[],onDelivery:false,deliveryStartedAt:null});
-let s=JSON.parse(localStorage.getItem(KEY)||localStorage.getItem(OLD_KEY)||'null')||blankState();
-s={...blankState(),...s,onDelivery:!!s.onDelivery,deliveryStartedAt:s.deliveryStartedAt||null};
-const savedRules=JSON.parse(localStorage.getItem(RULES_KEY)||'null')||{good:300,bad:220,move:20,leave:35};
-
-function rules(){
- let r={good:Math.max(1,+$('goodRate').value||300),bad:Math.max(1,+$('badRate').value||220),move:Math.max(1,+$('moveIdle').value||20),leave:Math.max(2,+$('leaveIdle').value||35)};
- if(r.leave<=r.move){r.leave=r.move+1;$('leaveIdle').value=r.leave}
- return r;
+const APP_VERSION=3, DATA_KEY='woltShiftDataV3', DIRTY_KEY='woltShiftDirtyV3';
+const $=id=>document.getElementById(id), now=()=>Date.now();
+const DEFAULT_RULES={good:300,bad:220,move:15,leave:30};
+const rid=()=>`${Date.now().toString(36)}-${Math.random().toString(36).slice(2,8)}`;
+const blankShift=()=>({id:null,startedAt:null,endedAt:null,activeMs:0,activeSince:null,paused:true,ended:false,waitingSince:null,currentJob:null,orders:[],idlePeriods:[],onlineSegments:[]});
+const blankData=()=>({version:APP_VERSION,current:blankShift(),history:[],pending:[],rules:{...DEFAULT_RULES},updatedAt:now()});
+function migrate(){
+ let existing=JSON.parse(localStorage.getItem(DATA_KEY)||'null');if(existing)return normalizeData(existing);
+ const old=JSON.parse(localStorage.getItem('woltShiftFinalV2')||localStorage.getItem('woltShiftFinalV1')||'null');
+ const oldRules=JSON.parse(localStorage.getItem('woltShiftRulesV2')||'null');
+ let d=blankData();if(oldRules)d.rules={...DEFAULT_RULES,...oldRules};
+ if(old?.startedAt){
+  const sh=blankShift();sh.id=old.shiftId||rid();sh.startedAt=old.startedAt;sh.endedAt=old.ended?now():null;sh.activeMs=old.activeMs||0;sh.activeSince=old.activeSince||null;sh.paused=!!old.paused;sh.ended=!!old.ended;
+  sh.waitingSince=(!sh.paused&&!sh.ended&&!old.onDelivery)?(old.lastOrderAt||old.startedAt):null;sh.currentJob=old.onDelivery?{id:rid(),acceptedAt:old.deliveryStartedAt||now()}:null;
+  sh.orders=(old.orders||[]).map(o=>({id:rid(),deliveredAt:o.time||now(),amount:Number(o.amount)||0}));
+  if(old.activeMs>0)sh.onlineSegments.push({start:old.startedAt,end:old.startedAt+old.activeMs});if(sh.activeSince&&!sh.paused&&!sh.ended)sh.onlineSegments.push({start:sh.activeSince,end:null});d.current=sh;
+ }
+ d.updatedAt=now();localStorage.setItem(DATA_KEY,JSON.stringify(d));return d;
 }
-function loadRules(){ $('goodRate').value=savedRules.good;$('badRate').value=savedRules.bad;$('moveIdle').value=savedRules.move;$('leaveIdle').value=savedRules.leave }
-function saveRules(){const r=rules();localStorage.setItem(RULES_KEY,JSON.stringify(r));return r}
+function normalizeData(x){
+ const d={...blankData(),...x};d.version=APP_VERSION;d.rules={...DEFAULT_RULES,...(x.rules||{})};d.current={...blankShift(),...(x.current||{})};d.current.orders=Array.isArray(d.current.orders)?d.current.orders:[];d.current.idlePeriods=Array.isArray(d.current.idlePeriods)?d.current.idlePeriods:[];d.current.onlineSegments=Array.isArray(d.current.onlineSegments)?d.current.onlineSegments:[];d.history=Array.isArray(x.history)?x.history.slice(0,45):[];d.pending=Array.isArray(x.pending)?x.pending:[];return d;
+}
+let db=migrate(), syncBusy=false;
+function rules(){let r={good:Math.max(1,+$('goodRate').value||DEFAULT_RULES.good),bad:Math.max(1,+$('badRate').value||DEFAULT_RULES.bad),move:Math.max(1,+$('moveIdle').value||DEFAULT_RULES.move),leave:Math.max(2,+$('leaveIdle').value||DEFAULT_RULES.leave)};if(r.leave<=r.move){r.leave=r.move+1;$('leaveIdle').value=r.leave}return r}
+function loadRules(){const r=db.rules||DEFAULT_RULES;$('goodRate').value=r.good;$('badRate').value=r.bad;$('moveIdle').value=r.move;$('leaveIdle').value=r.leave}
 function deviceId(){let id=localStorage.getItem('woltDeviceId');if(!id){id=crypto.randomUUID();localStorage.setItem('woltDeviceId',id)}return id}
 function deviceSecret(){let x=localStorage.getItem('woltDeviceSecret');if(!x){const b=new Uint8Array(24);crypto.getRandomValues(b);x=Array.from(b,v=>v.toString(16).padStart(2,'0')).join('');localStorage.setItem('woltDeviceSecret',x)}return x}
-function activeMs(){return (s.activeMs||0)+(!s.paused&&s.activeSince?Math.max(0,now()-s.activeSince):0)}
-function rate(){let h=activeMs()/3600000;return h>0?(s.earnings||0)/h:0}
-function fmt(ms){let m=Math.max(0,Math.floor(ms/60000)),h=Math.floor(m/60);return String(h).padStart(2,'0')+':'+String(m%60).padStart(2,'0')}
-function save(){localStorage.setItem(KEY,JSON.stringify(s))}
-function headers(){return {'content-type':'application/json','x-device-id':deviceId(),'x-device-secret':deviceSecret()}}
 function backend(){return (window.APP_CONFIG?.WORKER_URL||'').replace(/\/$/,'')}
-
-async function sync(){
- save();const rls=saveRules();
- if(!backend()){updateConn(false,'Backend not configured.');return}
- try{
-   let r=await fetch(backend()+'/state',{method:'POST',headers:headers(),body:JSON.stringify({state:s,rules:rls})});
-   let j=await r.json(); if(!r.ok)throw new Error(j.error||'sync failed');
-   updateConn(true,j.pushEnabled?'Background connected • iPhone alerts enabled.':'Background connected • alerts need enabling.');
-   $('nextAlert').textContent='Next server check: '+(j.nextAlarmAt?new Date(j.nextAlarmAt).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}):'—');
- }catch(e){updateConn(false,'Could not reach background backend. '+(e?.message||''))}
-}
+function headers(){return {'content-type':'application/json','x-device-id':deviceId(),'x-device-secret':deviceSecret()}}
+function touch(){db.rules=rules();db.updatedAt=now();saveLocal()}
+function saveLocal(){db.history=db.history.slice(0,45);localStorage.setItem(DATA_KEY,JSON.stringify(db));localStorage.setItem(DIRTY_KEY,'1');syncSWState()}
+function markClean(){localStorage.setItem(DIRTY_KEY,'0')}
+function isDirty(){return localStorage.getItem(DIRTY_KEY)==='1'}
 function updateConn(ok,text){$('conn').className='connection '+(ok?'ok':'bad');$('conn').textContent=text}
-
-function startShift(){
- if(s.startedAt&&!s.ended&&!confirm('A shift is already active. Start a new shift and reset this one?'))return;
- s={...blankState(),startedAt:now(),activeSince:now(),paused:false,lastOrderAt:now()};sync();render();
+function syncSWState(){if(!('serviceWorker' in navigator))return;const snapshot={shiftId:db.current?.id||null,paused:!!db.current?.paused,ended:!!db.current?.ended,onDelivery:!!db.current?.currentJob,waitingSince:db.current?.waitingSince||null,rules:{...db.rules},updatedAt:db.updatedAt};navigator.serviceWorker.ready.then(reg=>(navigator.serviceWorker.controller||reg.active)?.postMessage({type:'SHIFT_STATE',state:snapshot})).catch(()=>{})}
+async function sync(){
+ if(syncBusy)return;if(!backend()){updateConn(false,'Backend not configured.');return}syncBusy=true;
+ try{const r=await fetch(backend()+'/state',{method:'POST',headers:headers(),body:JSON.stringify({data:db})});const j=await r.json();if(!r.ok)throw new Error(j.error||'sync failed');markClean();updateConn(true,j.pushEnabled?'Background connected • iPhone alerts enabled.':'Background connected • alerts need enabling.');$('nextAlert').textContent='Next server check: '+(j.nextAlarmAt?new Date(j.nextAlarmAt).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}):'—');}
+ catch(e){updateConn(false,'Offline changes saved • will retry automatically.');localStorage.setItem(DIRTY_KEY,'1')}
+ finally{syncBusy=false}
 }
-function pauseShift(){
- if(!s.startedAt||s.paused||s.ended)return;
- s.activeMs=activeMs();s.activeSince=null;s.paused=true;s.onDelivery=false;s.deliveryStartedAt=null;sync();render();
-}
-function resumeShift(){
- if(!s.startedAt||s.ended)return startShift();if(!s.paused)return;
- s.activeSince=now();s.paused=false;s.lastOrderAt=now();s.onDelivery=false;s.deliveryStartedAt=null;sync();render();
-}
-function endShift(){
- if(!s.startedAt||s.ended)return;if(!confirm('End this shift?'))return;
- if(!s.paused){s.activeMs=activeMs();s.activeSince=null}s.paused=true;s.ended=true;s.onDelivery=false;s.deliveryStartedAt=null;sync();render();
-}
-function toggleDelivery(){
- if(!s.startedAt||s.ended)return alert('Start your shift first.');
- if(s.paused)return alert('Tap Back online first.');
- if(!s.onDelivery){s.onDelivery=true;s.deliveryStartedAt=now();}
- else {s.onDelivery=false;s.deliveryStartedAt=null;s.lastOrderAt=now();}
- sync();render();
-}
-function addOrder(){
- let v=+$('amount').value;if(!Number.isFinite(v)||v<=0)return alert('Enter a valid order payout.');
- if(!s.startedAt||s.ended)return alert('Start your shift first.');
- if(s.paused)return alert('You are offline. Tap Back online first.');
- const t=now();s.earnings=(s.earnings||0)+v;s.lastOrderAt=t;s.onDelivery=false;s.deliveryStartedAt=null;s.orders=Array.isArray(s.orders)?s.orders:[];s.orders.unshift({amount:v,time:t});$('amount').value='';sync();render();
-}
-function quick(v){$('amount').value=v;addOrder()}
-function undoLastOrder(){
- if(!Array.isArray(s.orders)||!s.orders.length)return alert('There is no order to undo.');
- const o=s.orders.shift();s.earnings=Math.max(0,(s.earnings||0)-(+o.amount||0));s.lastOrderAt=s.orders[0]?.time||s.startedAt||now();s.onDelivery=false;s.deliveryStartedAt=null;sync();render();
-}
-
-function decision(){
- if(!s.startedAt)return['READY','Start your shift, then tap Got order when Wolt gives you one.','stay'];
- if(s.ended)return['SHIFT DONE',`${Math.round(rate())} MKD/hr • ${Math.round(s.earnings||0)} MKD total`,'stay'];
- if(s.paused)return['OFFLINE','Paused time is excluded from your MKD/hr and idle timer.','move'];
- if(s.onDelivery)return['ON DELIVERY','Idle alerts are paused while you complete this order.','stay'];
- const c=rules(),mins=activeMs()/60000,r=rate(),idle=(now()-(s.lastOrderAt||s.startedAt))/60000;
- if(mins<30){
-   if(idle>=c.leave)return['GO HOME',`No order activity for ${Math.floor(idle)} min. Demand looks dead.`,'leave'];
-   if(idle>=c.move)return['REPOSITION',`${Math.floor(idle)} min idle. Move once to a stronger hotspot.`,'move'];
-   return['STAY',`Only ${Math.floor(mins)} min into the shift — collect more data first.`,'stay'];
- }
- if(idle>=c.leave&&r<c.good)return['GO HOME',`${Math.floor(idle)} min idle and ${Math.round(r)} MKD/hr.`,'leave'];
- if(r<c.bad&&idle>=c.move)return['GO HOME',`${Math.round(r)} MKD/hr with ${Math.floor(idle)} min idle.`,'leave'];
- if(idle>=c.move)return['REPOSITION',`${Math.floor(idle)} min without an order. Try one stronger hotspot.`,'move'];
- if(r>=c.good)return['STAY',`${Math.round(r)} MKD/hr is above your target.`,'stay'];
- if(r<c.bad)return['WATCH',`${Math.round(r)} MKD/hr is weak, but an order arrived recently.`,'move'];
- return['STAY',`${Math.round(r)} MKD/hr is acceptable and orders are moving.`,'stay'];
-}
-function render(){
- let d=decision();$('call').textContent=d[0];$('why').textContent=d[1];$('status').className='status '+d[2];$('rate').textContent=Math.round(rate());$('earnings').textContent=Math.round(s.earnings||0);$('online').textContent=fmt(activeMs());
- let idle=(!s.startedAt||s.paused||s.ended||s.onDelivery)?0:now()-(s.lastOrderAt||s.startedAt);$('idle').textContent=s.onDelivery?'—':fmt(idle);
- $('deliveryBtn').textContent=s.onDelivery?'✓ On delivery — tap if cancelled':'🚲 Got order';$('deliveryBtn').className='deliveryBtn '+(s.onDelivery?'active':'primary');$('deliveryHint').textContent=s.onDelivery?'No reposition/go-home alert will fire until you complete or cancel this order.':'Tap once when Wolt gives you an order. Idle alerts pause until you complete it.';
- $('undoBtn').disabled=!s.orders?.length;
-}
+function commit(){touch();render();sync()}
+function s(){return db.current}
+function shiftEarnings(sh){return (sh?.orders||[]).reduce((a,o)=>a+(Number.isFinite(+o.amount)?+o.amount:0),0)}
+function activeMs(sh=s(),at=now()){return (sh.activeMs||0)+(!sh.paused&&sh.activeSince?Math.max(0,at-sh.activeSince):0)}
+function fmt(ms){let m=Math.max(0,Math.floor(ms/60000)),h=Math.floor(m/60);return String(h).padStart(2,'0')+':'+String(m%60).padStart(2,'0')}
+function fmtShort(ms){let m=Math.max(0,Math.round(ms/60000)),h=Math.floor(m/60);return h?`${h}h ${m%60}m`:`${m}m`}
+function rate(sh=s(),at=now()){let h=activeMs(sh,at)/3600000;return h>0?shiftEarnings(sh)/h:0}
+function openOnline(at=now()){if(s().activeSince)return;s().activeSince=at;s().onlineSegments.push({start:at,end:null})}
+function closeOnline(at=now()){if(!s().activeSince)return;s().activeMs=(s().activeMs||0)+Math.max(0,at-s().activeSince);s().activeSince=null;for(let i=s().onlineSegments.length-1;i>=0;i--){if(s().onlineSegments[i].end==null){s().onlineSegments[i].end=at;break}}}
+function startWaiting(at=now()){s().waitingSince=at}
+function closeWaiting(reason,at=now()){if(!s().waitingSince)return;s().idlePeriods.push({start:s().waitingSince,end:at,reason});s().waitingSince=null}
+function currentIdleMs(at=now()){return s().waitingSince&&!s().paused&&!s().ended&&!s().currentJob?Math.max(0,at-s().waitingSince):0}
+function startShift(){if(s().startedAt&&!s().ended&&!confirm('A shift is already active. Start a new shift and reset the active one?'))return;db.current=blankShift();const t=now();db.current.id=rid();db.current.startedAt=t;db.current.paused=false;openOnline(t);startWaiting(t);commit()}
+function pauseShift(){if(!s().startedAt||s().paused||s().ended)return;if(s().currentJob)return alert('You are on a delivery. Finish it or cancel the delivery state first.');const t=now();closeWaiting('offline',t);closeOnline(t);s().paused=true;commit()}
+function resumeShift(){if(!s().startedAt||s().ended)return startShift();if(!s().paused)return;const t=now();s().paused=false;openOnline(t);startWaiting(t);commit()}
+function endShift(){if(!s().startedAt||s().ended)return;if(s().currentJob)return alert('Finish the delivery, mark Price Later, or cancel the order before ending the shift.');if(!confirm('End this shift?'))return;const t=now();closeWaiting('end',t);closeOnline(t);s().paused=true;s().ended=true;s().endedAt=t;archiveCurrent();commit()}
+function gotOrder(){if(!s().startedAt||s().ended)return alert('Start your shift first.');if(s().paused)return alert('Tap Back online first.');if(s().currentJob)return;const t=now();closeWaiting('order',t);s().currentJob={id:rid(),acceptedAt:t};commit()}
+function cancelDelivery(){if(!s().currentJob)return;if(!confirm('Cancel the current delivery state? Only do this if the Wolt order was cancelled or you are no longer delivering it.'))return;s().currentJob=null;startWaiting(now());commit()}
+function completeCurrent(amount){const t=now(),job=s().currentJob;if(!job)return false;s().orders.push({id:job.id,deliveredAt:t,amount:+amount});s().currentJob=null;startWaiting(t);return true}
+function deliveredPriceLater(){if(!s().currentJob)return alert('No active delivery.');const t=now(),job=s().currentJob;s().orders.push({id:job.id,deliveredAt:t,amount:null});db.pending.push({id:job.id,shiftId:s().id,deliveredAt:t});s().currentJob=null;startWaiting(t);commit()}
+function findOrder(shiftId,orderId){if(db.current?.id===shiftId){const o=db.current.orders.find(x=>x.id===orderId);if(o)return {order:o,where:'current'}}const h=db.history.find(x=>x.id===shiftId);if(h){const o=(h.orders||[]).find(x=>x.id===orderId);if(o)return {order:o,where:'history',history:h}}return null}
+function addPendingAmount(p,amount,finalize=true){const found=findOrder(p.shiftId,p.id);if(!found)return false;found.order.amount=(Number.isFinite(+found.order.amount)?+found.order.amount:0)+(+amount||0);found.order.paidAt=now();if(finalize)db.pending=db.pending.filter(x=>x.id!==p.id);if(found.where==='current'&&s().ended)archiveCurrent();return true}
+function resolvePending(p,amount){return addPendingAmount(p,amount,true)}
+function addPayout(){let v=+$('amount').value;if(!Number.isFinite(v)||v<=0)return alert('Enter a valid payout.');if(!s().startedAt)return alert('Start your shift first.');if(s().currentJob){completeCurrent(v)}else if(db.pending.length){resolvePending(db.pending[0],v)}else{if(s().ended)return alert('No pending price to add to this ended shift.');if(s().paused)return alert('You are offline. Tap Back online first.');if(!confirm('No active delivery or pending price. Add this as a completed delivery now and reset idle?'))return;const t=now();s().orders.push({id:rid(),deliveredAt:t,amount:v});if(s().waitingSince)closeWaiting('manual-complete',t);startWaiting(t)}$('amount').value='';commit()}
+function quick(v){$('amount').value=v;addPayout()}
+function paidOrders(){const all=[];if(s()?.orders)for(const o of s().orders)if(Number.isFinite(+o.amount))all.push({shiftId:s().id,order:o,where:'current'});for(const h of db.history)for(const o of h.orders||[])if(Number.isFinite(+o.amount))all.push({shiftId:h.id,order:o,where:'history',history:h});return all.sort((a,b)=>(b.order.paidAt||b.order.deliveredAt)-(a.order.paidAt||a.order.deliveredAt))}
+function undoLastPayout(){const last=paidOrders()[0];if(!last)return alert('There is no payout to undo.');if(!confirm(`Undo the last payout of ${Math.round(+last.order.amount)} MKD? The delivery stays recorded and becomes Price Later.`))return;last.order.amount=null;last.order.paidAt=null;if(!db.pending.some(p=>p.id===last.order.id))db.pending.push({id:last.order.id,shiftId:last.shiftId,deliveredAt:last.order.deliveredAt});if(last.where==='current'&&s().ended)archiveCurrent();commit()}
+function editLastPayout(){const last=paidOrders()[0];if(!last)return alert('There is no payout to edit.');const nv=prompt('Correct payout in MKD:',String(last.order.amount));if(nv===null)return;const v=+nv;if(!Number.isFinite(v)||v<=0)return alert('Enter a valid payout.');last.order.amount=v;last.order.paidAt=now();if(last.where==='current'&&s().ended)archiveCurrent();commit()}
+function addPriceToPending(id){const p=db.pending.find(x=>x.id===id);if(!p)return;const nv=prompt('Enter the final/remaining payout amount in MKD:','');if(nv===null)return;const v=+nv;if(!Number.isFinite(v)||v<=0)return alert('Enter a valid payout.');addPendingAmount(p,v,true);commit()}
+function addPartToPending(id){const p=db.pending.find(x=>x.id===id);if(!p)return;const nv=prompt('Enter this payout part in MKD:','');if(nv===null)return;const v=+nv;if(!Number.isFinite(v)||v<=0)return alert('Enter a valid payout.');addPendingAmount(p,v,false);commit()}
+function completeSegments(sh,at=now()){return (sh.onlineSegments||[]).map(x=>({start:+x.start,end:x.end==null?at:+x.end})).filter(x=>x.end>x.start)}
+function overlapMs(a1,a2,b1,b2){return Math.max(0,Math.min(a2,b2)-Math.max(a1,b1))}
+function onlineMsBetween(sh,start,end,at=now()){return completeSegments(sh,at).reduce((sum,g)=>sum+overlapMs(g.start,g.end,start,end),0)}
+function rateWindow(sh,mins,offset=0,at=now()){if(!sh.startedAt)return null;const end=at-offset*60000,start=end-mins*60000,ms=onlineMsBetween(sh,start,end,at);if(ms<10*60000)return null;const earn=(sh.orders||[]).filter(o=>Number.isFinite(+o.amount)&&o.deliveredAt>=start&&o.deliveredAt<=end).reduce((a,o)=>a+(+o.amount||0),0);return earn/(ms/3600000)}
+function momentum(){const a=rateWindow(s(),30,0),b=rateWindow(s(),30,30);if(a==null||b==null)return {label:'BUILDING DATA',why:'Needs about 20+ minutes in both recent windows.'};if(b===0&&a>0)return {label:'IMPROVING',why:'Recent 30 minutes are stronger than the previous 30.'};const ratio=b>0?a/b:1;if(ratio>1.2)return {label:'IMPROVING',why:`Recent pace is about ${Math.round((ratio-1)*100)}% stronger.`};if(ratio<.8)return {label:'FALLING',why:`Recent pace is about ${Math.round((1-ratio)*100)}% weaker.`};return {label:'STEADY',why:'Recent pace is similar to the previous 30 minutes.'}}
+function decision(){if(!s().startedAt)return['READY','Start your shift, then tap Got order when Wolt gives you one.','stay'];if(s().ended){const sm=summaryFromCurrent();return['SHIFT DONE',`${Math.round(sm.rate)} MKD/hr • ${Math.round(sm.earnings)} MKD • ${sm.rating}`,'stay']};if(s().paused)return['OFFLINE','Paused time is excluded from MKD/hr and idle.','move'];if(s().currentJob)return['ON DELIVERY','Idle alerts are paused. Keep this active through every drop in a double/batch.','stay'];const c=rules(),idle=currentIdleMs()/60000,whole=rate(),r60=rateWindow(s(),60);if(idle>=c.leave)return['GO HOME',`${Math.floor(idle)} min idle • ${Math.round(whole)} MKD/hr${r60!=null?` • last 60: ${Math.round(r60)}`:''}.`,'leave'];if(idle>=c.move)return['REPOSITION',`${Math.floor(idle)} min idle${r60!=null?` • last 60: ${Math.round(r60)} MKD/hr`:''}. Move once, then let the timer continue.`,'move'];const mins=activeMs()/60000;if(mins<30)return['STAY',`Only ${Math.floor(mins)} min online — collect more data first.`,'stay'];if(r60!=null&&r60<c.bad)return['WATCH',`Recent pace is weak at ${Math.round(r60)} MKD/hr. Wait for the idle threshold before making a move.`,'move'];if(r60!=null&&r60>=c.good)return['STAY',`Last 60 min is strong at ${Math.round(r60)} MKD/hr.`,'stay'];if(whole>=c.good)return['STAY',`${Math.round(whole)} MKD/hr overall is above target.`,'stay'];if(whole<c.bad)return['WATCH',`${Math.round(whole)} MKD/hr is weak, but an order arrived recently.`,'move'];return['STAY',`${Math.round(whole)} MKD/hr is acceptable and orders are moving.`,'stay']}
+function idleStats(sh){const p=sh.idlePeriods||[];const d=p.map(x=>Math.max(0,(x.end||now())-x.start));const waits=p.filter(x=>x.reason==='order').map(x=>Math.max(0,x.end-x.start));return {total:d.reduce((a,b)=>a+b,0),longest:d.length?Math.max(...d):0,avgWait:waits.length?waits.reduce((a,b)=>a+b,0)/waits.length:0,waitCount:waits.length}}
+function hourOnlineBins(sh){const bins=Array(24).fill(0);for(const g of completeSegments(sh,sh.endedAt||now())){let cur=g.start;while(cur<g.end){const d=new Date(cur),next=new Date(d);next.setMinutes(60,0,0);const n=Math.min(g.end,next.getTime());bins[d.getHours()]+=Math.max(0,n-cur);cur=n}}return bins}
+function archiveCurrent(){if(!s().ended)return;const st=idleStats(s());const item={id:s().id,startedAt:s().startedAt,endedAt:s().endedAt,onlineMs:activeMs(s(),s().endedAt),waitSamplesMs:(s().idlePeriods||[]).filter(x=>x.reason==='order').map(x=>Math.max(0,x.end-x.start)).slice(-60),orders:(s().orders||[]).map(o=>({id:o.id,deliveredAt:o.deliveredAt,amount:Number.isFinite(+o.amount)?+o.amount:null,paidAt:o.paidAt||null})),idleTotalMs:st.total,longestIdleMs:st.longest,avgWaitMs:st.avgWait,waitCount:st.waitCount,hourOnlineMs:hourOnlineBins(s()),updatedAt:now()};const idx=db.history.findIndex(x=>x.id===item.id);if(idx>=0)db.history[idx]=item;else db.history.unshift(item);db.history=db.history.sort((a,b)=>b.endedAt-a.endedAt).slice(0,45)}
+function historyEarnings(h){return (h.orders||[]).reduce((a,o)=>a+(Number.isFinite(+o.amount)?+o.amount:0),0)}
+function historyRate(h){return h.onlineMs>0?historyEarnings(h)/(h.onlineMs/3600000):0}
+function ratingFor(r){const c=rules();return r>=c.good*1.15?'EXCELLENT':r>=c.good?'GOOD':r>=c.bad?'OKAY':'WEAK'}
+function summaryFromCurrent(){const st=idleStats(s()),r=rate(s(),s().endedAt||now());return {earnings:shiftEarnings(s()),onlineMs:activeMs(s(),s().endedAt||now()),rate:r,rating:ratingFor(r),orders:(s().orders||[]).length,totalIdleMs:st.total,longestIdleMs:st.longest,avgWaitMs:st.avgWait}}
+function percentile(a,p){if(!a.length)return null;const x=[...a].sort((m,n)=>m-n),i=(x.length-1)*p,lo=Math.floor(i),hi=Math.ceil(i);return lo===hi?x[lo]:x[lo]+(x[hi]-x[lo])*(i-lo)}
+function learnedIdleRules(){const samples=[];for(const h of db.history)for(const v of h.waitSamplesMs||[])if(Number.isFinite(+v)&&v>=0)samples.push(+v);for(const x of s().idlePeriods||[])if(x.reason==='order')samples.push(Math.max(0,x.end-x.start));if(db.history.length<3||samples.length<15)return {ready:false,samples:samples.length};const p70=(percentile(samples,.70)||0)/60000,p95=(percentile(samples,.95)||0)/60000;const move=Math.max(12,Math.min(20,Math.round(p70)));const leave=Math.max(move+10,Math.min(45,Math.max(25,Math.round(p95+5))));return {ready:true,move,leave,samples:samples.length}}
+function applyLearnedRules(){const lr=learnedIdleRules();if(!lr.ready)return alert('Not enough shift history yet.');$('moveIdle').value=lr.move;$('leaveIdle').value=lr.leave;db.rules=rules();commit()}
+function historicalBestHour(){const online=Array(24).fill(0),earn=Array(24).fill(0);for(const h of db.history){for(let i=0;i<24;i++)online[i]+=h.hourOnlineMs?.[i]||0;for(const o of h.orders||[])if(Number.isFinite(+o.amount))earn[new Date(o.deliveredAt).getHours()]+=+o.amount}let best=null;for(let i=0;i<24;i++){if(online[i]<60*60000)continue;const r=earn[i]/(online[i]/3600000);if(!best||r>best.rate)best={hour:i,rate:r,online:online[i]}}return best}
+function todayStats(){const d=new Date(),start=new Date(d.getFullYear(),d.getMonth(),d.getDate()).getTime(),end=start+86400000;const hs=db.history.filter(h=>h.startedAt>=start&&h.startedAt<end&&h.id!==s().id);let earnings=hs.reduce((a,h)=>a+historyEarnings(h),0),online=hs.reduce((a,h)=>a+(h.onlineMs||0),0),count=hs.length;if(s().startedAt>=start&&s().startedAt<end){earnings+=shiftEarnings(s());online+=activeMs();if(s().startedAt)count++}return {count,earnings,online,rate:online?earnings/(online/3600000):0}}
+function weeklyStats(){const cutoff=now()-7*86400000,hs=db.history.filter(h=>h.endedAt>=cutoff);const earnings=hs.reduce((a,h)=>a+historyEarnings(h),0),online=hs.reduce((a,h)=>a+(h.onlineMs||0),0);return {count:hs.length,earnings,online,rate:online?earnings/(online/3600000):0}}
+function bestShift(){return db.history.filter(h=>(h.onlineMs||0)>=3600000).sort((a,b)=>historyRate(b)-historyRate(a))[0]||null}
+function avgWaitCurrent(){const st=idleStats(s());return st.avgWait}
+function confidence(){const h=db.history.length,m=activeMs()/60000;if(h>=5&&m>=45)return {label:'HIGH',why:`Based on this shift plus ${h} saved shifts.`};if(h>=2||m>=60)return {label:'MEDIUM',why:`${h} saved shift${h===1?'':'s'} • ${Math.round(m)} min online today.`};return {label:'LOW',why:'Keep logging shifts; the advice gets more personalized.'}}
+function projection(){const h=activeMs()/3600000;if(h<=0)return null;const whole=rate(),r60=rateWindow(s(),60);const pace=r60==null?whole:.65*r60+.35*whole;const p4=h<4?shiftEarnings(s())+(4-h)*pace:null,p5=h<5?shiftEarnings(s())+(5-h)*pace:null;return {pace,p4,p5}}
+function renderPending(){const box=$('pendingBox'),list=$('pendingList');if(!db.pending.length){box.classList.add('hidden');list.innerHTML='';return}box.classList.remove('hidden');$('pendingTitle').textContent=`Pending prices (${db.pending.length})`;list.innerHTML=db.pending.slice(0,6).map(p=>{const f=findOrder(p.shiftId,p.id),added=f&&Number.isFinite(+f.order.amount)&&+f.order.amount>0?` • ${Math.round(+f.order.amount)} MKD added`:'';return `<div class="pendingItem"><span>Delivered ${new Date(p.deliveredAt).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}${added}</span><div class="row"><button onclick="addPartToPending('${p.id}')">+ Part</button><button onclick="addPriceToPending('${p.id}')">Add final</button></div></div>`}).join('')}
+function renderHistory(){const el=$('historyList');if(!db.history.length){el.className='notice';el.innerHTML='No finished shifts saved yet.';return}el.className='';el.innerHTML=db.history.slice(0,8).map(h=>{const r=historyRate(h),rating=ratingFor(r),e=historyEarnings(h),pending=db.pending.filter(p=>p.shiftId===h.id).length;return `<div class="historyItem"><div class="historyTop"><b>${new Date(h.startedAt).toLocaleDateString([], {month:'short',day:'numeric'})} • ${new Date(h.startedAt).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}–${new Date(h.endedAt).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</b><span class="rating ${rating.toLowerCase()}">${rating}</span></div><div class="historyLine">${Math.round(e)} MKD • ${Math.round(r)} MKD/hr • ${fmtShort(h.onlineMs)} • ${(h.orders||[]).length} jobs/batches${pending?` • ${pending} price pending`:''}</div><div class="historyLine">Avg wait ${h.avgWaitMs?fmtShort(h.avgWaitMs):'—'} • longest idle ${h.longestIdleMs?fmtShort(h.longestIdleMs):'—'}</div></div>`}).join('')}
+function renderInsights(){const r30=rateWindow(s(),30),r60=rateWindow(s(),60),r90=rateWindow(s(),90);$('recentRates').textContent=[r30,r60,r90].map(x=>x==null?'—':Math.round(x)).join(' / ');const m=momentum();$('momentum').textContent=m.label;$('momentumWhy').textContent=m.why;const c=confidence();$('confidence').textContent=c.label;$('confidenceWhy').textContent=c.why;const p=projection();$('projection').textContent=p?`${p.p4!=null?`4h ~${Math.round(p.p4)} • `:''}${p.p5!=null?`5h ~${Math.round(p.p5)}`:`pace ~${Math.round(p.pace)}/h`}`:'—';const hours=activeMs()/3600000,need=Math.max(0,rules().good*(hours+1)-shiftEarnings(s()));$('needHour').textContent=s().startedAt&&!s().ended?`${Math.round(need)} MKD`:'—';$('needHourWhy').textContent=s().startedAt&&!s().ended?`Earn about this much in the next online hour to finish that hour still averaging ${rules().good} MKD/hr overall.`:'Start a shift to calculate this.';const n=(s().orders||[]).length,aw=avgWaitCurrent();$('orderFlow').textContent=s().startedAt?`${n} job${n===1?'':'s'}/batch${n===1?'':'es'}${aw?` • ${fmtShort(aw)} avg wait`:''}`:'—';$('orderFlowWhy').textContent=db.pending.length?`${db.pending.length} payout${db.pending.length===1?'':'s'} still pending.`:'Tracks batches as one active delivery period.';const bh=historicalBestHour();$('bestHour').textContent=bh?`${String(bh.hour).padStart(2,'0')}:00–${String((bh.hour+1)%24).padStart(2,'0')}:00`:'LEARNING';$('bestHourWhy').textContent=bh?`~${Math.round(bh.rate)} MKD/hr across ${fmtShort(bh.online)} online in that hour.`:'Needs at least 1 hour of saved online time in a time slot.';const lr=learnedIdleRules();$('learnedRules').textContent=lr.ready?`${lr.move} / ${lr.leave} min`:'LEARNING';$('learnedWhy').textContent=lr.ready?`Suggested reposition / go-home thresholds from ${lr.samples} successful waits. It never changes your rules automatically.`:`${lr.samples} successful waits saved • needs at least 15 across 3 finished shifts.`;$('applyLearned').classList.toggle?.('hidden',!lr.ready);const td=todayStats();$('todayStats').textContent=td.count?`${Math.round(td.earnings)} MKD • ${Math.round(td.rate)}/hr`:'—';$('todayWhy').textContent=td.count?`${td.count} shift${td.count===1?'':'s'} • ${fmtShort(td.online)} online today.`:'No shift data today yet.';const w=weeklyStats();$('weekly').textContent=w.count?`${Math.round(w.earnings)} MKD • ${Math.round(w.rate)}/hr`:'—';$('weeklyWhy').textContent=w.count?`${w.count} finished shift${w.count===1?'':'s'} • ${fmtShort(w.online)} online.`:'Finish shifts to build weekly stats.';const b=bestShift();$('record').textContent=b?`${Math.round(historyRate(b))} MKD/hr`:'—';$('recordWhy').textContent=b?`${new Date(b.startedAt).toLocaleDateString([], {month:'short',day:'numeric'})} • ${Math.round(historyEarnings(b))} MKD in ${fmtShort(b.onlineMs)}.`:'Needs a finished shift with at least 1 hour online.'}
+function render(){const d=decision();$('call').textContent=d[0];$('why').textContent=d[1];$('status').className='status '+d[2];$('rate').textContent=Math.round(rate());const r60=rateWindow(s(),60);$('rate60').textContent=r60==null?'—':Math.round(r60);$('earnings').textContent=Math.round(shiftEarnings(s()));$('online').textContent=fmt(activeMs());$('idle').textContent=s().currentJob?'—':fmt(currentIdleMs());const on=!!s().currentJob;$('deliveryBtn').textContent=on?'🚲 ON DELIVERY / BATCH':'🚲 Got order / batch';$('deliveryBtn').className='deliveryBtn '+(on?'active':'primary');$('deliveryBtn').disabled=on;$('deliveryHint').textContent=on?'Keep this active until the final drop. Then enter the total payout or choose Price Later.':'One tap when Wolt gives you an order. For doubles, keep it active until the final drop.';$('deliveryActions').className='deliveryActions '+(on?'show':'');$('payBtn').textContent=on?'✓ Delivered + pay':db.pending.length?'+ Add late pay':'+ Complete';const hasPaid=paidOrders().length>0;$('undoBtn').disabled=!hasPaid;$('editBtn').disabled=!hasPaid;renderPending();renderInsights();renderHistory();syncSWState()}
 function b64ToBytes(v){const p=v+'='.repeat((4-v.length%4)%4),raw=atob(p.replace(/-/g,'+').replace(/_/g,'/'));return Uint8Array.from(raw,c=>c.charCodeAt(0))}
-async function enablePush(){
- if(!backend())return alert('Configure the backend URL first.');
- if(!('serviceWorker'in navigator)||!('PushManager'in window))return alert('Open the installed Home Screen app. Push is unavailable in this browser view.');
- try{
-   const permission=await Notification.requestPermission();if(permission!=='granted')return alert('Notifications were not allowed.');
-   const reg=await navigator.serviceWorker.ready;
-   const k=await (await fetch(backend()+'/vapid-public-key',{headers:headers()})).json();
-   let sub=await reg.pushManager.getSubscription();
-   if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64ToBytes(k.publicKey).buffer});
-   const r=await fetch(backend()+'/subscribe',{method:'POST',headers:headers(),body:JSON.stringify(sub.toJSON())});
-   if(!r.ok)throw new Error('Could not save push subscription.');
-   await sync();alert('Background alerts enabled.');
- }catch(e){alert(e?.message||'Could not enable alerts.')}
-}
-async function testPush(){
- if(!backend())return alert('Configure the backend first.');
- try{let r=await fetch(backend()+'/test',{method:'POST',headers:headers()});let j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||'Enable iPhone alerts again.');}
- catch(e){alert(e?.message||'Test alert failed. Try enabling iPhone alerts again.');await sync()}
-}
+async function enablePush(){if(!backend())return alert('Configure the backend URL first.');if(!('serviceWorker'in navigator)||!('PushManager'in window))return alert('Open the installed Home Screen app. Push is unavailable in this browser view.');try{const permission=await Notification.requestPermission();if(permission!=='granted')return alert('Notifications were not allowed.');const reg=await navigator.serviceWorker.ready;const k=await (await fetch(backend()+'/vapid-public-key',{headers:headers()})).json();let sub=await reg.pushManager.getSubscription();if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64ToBytes(k.publicKey).buffer});const r=await fetch(backend()+'/subscribe',{method:'POST',headers:headers(),body:JSON.stringify(sub.toJSON())});if(!r.ok)throw new Error('Could not save push subscription.');await sync();alert('Background alerts enabled.')}catch(e){alert(e?.message||'Could not enable alerts.')}}
+async function testPush(){if(!backend())return alert('Configure the backend first.');try{let r=await fetch(backend()+'/test',{method:'POST',headers:headers()});let j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||'Enable iPhone alerts again.')}catch(e){alert(e?.message||'Test alert failed. Try enabling iPhone alerts again.');await sync()}}
+function exportData(){const payload={exportedAt:new Date().toISOString(),app:'Wolt Shift Efficiency',version:APP_VERSION,data:db,device:{id:deviceId(),secret:deviceSecret()}};const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`wolt-shift-backup-${new Date().toISOString().slice(0,10)}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function importData(ev){const file=ev.target.files?.[0];if(!file)return;const fr=new FileReader();fr.onload=()=>{try{const p=JSON.parse(fr.result);if(!p?.data?.current||!Array.isArray(p.data.history))throw new Error('Not a valid Wolt Shift backup.');if(!confirm('Import this backup and replace the app data on this phone?'))return;db=normalizeData(p.data);if(p.device?.id&&p.device?.secret){localStorage.setItem('woltDeviceId',p.device.id);localStorage.setItem('woltDeviceSecret',p.device.secret)}loadRules();db.updatedAt=now();saveLocal();render();sync();alert('Backup imported. Re-enable iPhone alerts if this is a different phone.')}catch(e){alert(e.message||'Could not import backup.')}finally{ev.target.value=''}};fr.readAsText(file)}
+async function restoreCloud(){if(!backend())return alert('Backend not configured.');fetch(backend()+'/backup',{headers:headers()}).then(async r=>{const j=await r.json();if(!r.ok||!j.data)throw new Error(j.error||'No cloud copy found.');if(!confirm('Replace this phone\'s app data with the latest cloud copy?'))return;db=normalizeData(j.data);localStorage.setItem(DATA_KEY,JSON.stringify(db));loadRules();render();markClean();await sync();alert('Cloud copy restored.');}).catch(e=>alert(e.message||'Could not restore cloud copy.'))}
+async function startupRecovery(){if(!backend())return;try{const r=await fetch(backend()+'/backup',{headers:headers()});const j=await r.json();if(r.ok&&j.data&&(+j.data.updatedAt||0)>(+db.updatedAt||0)+1500&&!isDirty()){db=normalizeData(j.data);localStorage.setItem(DATA_KEY,JSON.stringify(db));loadRules();render()}await sync()}catch{await sync()}}
 loadRules();
-if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js');
-['goodRate','badRate','moveIdle','leaveIdle'].forEach(id=>$(id).addEventListener('change',()=>{saveRules();sync();render()}));
-if(backend())sync();else updateConn(false,'Backend not configured.');
-render();setInterval(render,1000);
+if('serviceWorker'in navigator){navigator.serviceWorker.register('./sw.js').then(r=>r.update()).catch(()=>{});}
+['goodRate','badRate','moveIdle','leaveIdle'].forEach(id=>$(id).addEventListener('change',()=>{db.rules=rules();commit()}));
+window.addEventListener('online',()=>{if(isDirty())sync()});setInterval(()=>{if(isDirty()&&navigator.onLine)sync()},30000);
+render();startupRecovery();setInterval(render,1000);
 </script></body></html>
